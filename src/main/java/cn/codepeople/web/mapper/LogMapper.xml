@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.codepeople.web.mapper.LogMapper">
+    
+    <resultMap type="cn.codepeople.web.entity.Log" id="BaseResultMap">
+        <result property="id"    column="id"    />
+        <result property="logName"    column="log_name"    />
+        <result property="logDetail"    column="log_detail"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    jdbcType="TIMESTAMP" column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"     jdbcType="TIMESTAMP" column="update_time"    />
+        <result property="remark"    column="remark"    />
+    </resultMap>
+
+    <sql id="selectVo">
+        select id, log_name, log_detail, create_by, create_time, update_by, update_time, remark from tb_log
+    </sql>
+
+    <select id="selectList" parameterType="cn.codepeople.web.entity.Log" resultMap="BaseResultMap">
+        <include refid="selectVo"/>
+        <where>  
+            <if test="logName != null  and logName != ''"> and log_name like '%#{logName}%'</if>
+        </where>
+    </select>
+    
+    <select id="selectById" parameterType="String" resultMap="BaseResultMap">
+        <include refid="selectVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertVo" parameterType="cn.codepeople.web.entity.Log">
+        insert into tb_log
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''">id,</if>
+            <if test="logName != null  and logName != ''">log_name,</if>
+            <if test="logDetail != null  and logDetail != ''">log_detail,</if>
+            <if test="createBy != null  and createBy != ''">create_by,</if>
+            <if test="createTime != null ">create_time,</if>
+            <if test="updateBy != null  and updateBy != ''">update_by,</if>
+            <if test="updateTime != null ">update_time,</if>
+            <if test="remark != null  and remark != ''">remark,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''">#{id},</if>
+            <if test="logName != null  and logName != ''">#{logName},</if>
+            <if test="logDetail != null  and logDetail != ''">#{logDetail},</if>
+            <if test="createBy != null  and createBy != ''">#{createBy},</if>
+            <if test="createTime != null ">#{createTime},</if>
+            <if test="updateBy != null  and updateBy != ''">#{updateBy},</if>
+            <if test="updateTime != null ">#{updateTime},</if>
+            <if test="remark != null  and remark != ''">#{remark},</if>
+         </trim>
+    </insert>
+
+    <update id="updateVo" parameterType="cn.codepeople.web.entity.Log">
+        update tb_user
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="logName != null  and logName != ''">log_name = #{logName},</if>
+            <if test="logDetail != null  and logDetail != ''">log_detail = #{logDetail},</if>
+            <if test="createBy != null  and createBy != ''">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null  and updateBy != ''">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="remark != null and remark != ''">remark = #{remark},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteById" parameterType="String">
+        delete from tb_user where id = #{id}
+    </delete>
+
+    <delete id="deleteByIds" parameterType="String">
+        delete from tb_user where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+</mapper>

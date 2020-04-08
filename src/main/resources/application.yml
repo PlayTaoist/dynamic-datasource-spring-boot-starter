@@ -1,0 +1,22 @@
+server:
+  port: 8838
+#数据源配置  
+spring:
+  datasource:
+    dynamic:
+      primary: master #设置默认的数据源或者数据源组,默认值即为master
+      strict: false #设置严格模式,默认false不启动. 启动后在未匹配到指定数据源时候回抛出异常,不启动会使用默认数据源.
+      datasource:
+        master:
+          url: jdbc:mysql://127.0.0.1:3306/master?useUnicode=true&zeroDateTimeBehavior=convertToNull&autoReconnect=true&useSSL=false&characterEncoding=utf-8&serverTimezone=UTC
+          username: root
+          password: root
+          driver-class-name: com.mysql.cj.jdbc.Driver
+        slave:
+          url: jdbc:mysql://127.0.0.1:3306/salve?useUnicode=true&zeroDateTimeBehavior=convertToNull&autoReconnect=true&useSSL=false&characterEncoding=utf-8&serverTimezone=UTC
+          username: root
+          password: root
+          driver-class-name: com.mysql.cj.jdbc.Driver
+mybatis-plus:
+  configuration:
+    map-underscore-to-camel-case: true #开启驼峰命名
